@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<script>
+    function myJsonp(url,arg,fn) {
+        //动态创建script标签
+        var spt = document.createElement('script');
+        //设置src属性
+        //拼接url及arg
+        //http://api.douban.com/v2/movie/in_theaters?start=xxx&count=xxx&callback=xxx
+        var querystring=''
+        for(var key in arg){
+            querystring+=key+'='+arg[key]+'&'
+        }
+
+        var funcName='myJsonp'+Math.random().toString().substr(2);
+        url+='?'+querystring+'callback='+funcName
+        window[funcName]=function (data) {
+            fn(data)
+        }
+        spt.src=url
+        //添加script到dom中
+        document.body.appendChild(spt)
+    }
+
+    myJsonp('http://api.douban.com/v2/movie/in_theaters',{start:1,count:3},function (data) {
+        console.log(111)
+    })
+    myJsonp('http://api.douban.com/v2/movie/in_theaters',{start:1,count:3},function (data) {
+        console.log(222)
+    })
+</script>
+</body>
+</html>
